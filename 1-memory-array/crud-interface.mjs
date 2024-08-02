@@ -1,6 +1,6 @@
 export default function (toDoList = []) {
   console.log("Function called with toDoList:", toDoList);
-  var index = toDoList.length + 1;
+  let index = toDoList.length + 1;
   return {
     createToDo,
     readToDoList,
@@ -32,9 +32,5 @@ export default function (toDoList = []) {
       toDoList.splice(toDoItemIndex, 1);
     }
     console.log("ToDo list after deleting:", toDoList);
-  }
-  function deleteToDo2(toDoId) {
-    toDoList = toDoList.filter((toDo) => toDo.id != toDoId);
-    console.log("ToDo list after deleting (2):", toDoList);
   }
 }

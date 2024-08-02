@@ -1,6 +1,7 @@
-export default function (toDoList = []) {
+export default function (webStore = window.sessionStorage) {
+  let toDoList = JSON.parse(webStore.getItem("toDoList")) || [];
   console.log("Function called with toDoList:", toDoList);
-  var index = toDoList.length + 1;
+  let index = toDoList.length + 1;
   return {
     createToDo,
     readToDoList,
@@ -14,6 +15,7 @@ export default function (toDoList = []) {
       id: `${index++}`,
       done: false,
     });
+    webStore.setItem("toDoList", JSON.stringify(toDoList));
     console.log("ToDo list after adding:", toDoList);
   }
   function readToDoList() {
@@ -24,6 +26,7 @@ export default function (toDoList = []) {
     if (toDo) {
       toDo.done = !toDo.done;
     }
+    webStore.setItem("toDoList", JSON.stringify(toDoList));
     console.log("ToDo list after updating:", toDoList);
   }
   function deleteToDo(toDoId) {
@@ -31,10 +34,7 @@ export default function (toDoList = []) {
     if (toDoItemIndex > -1) {
       toDoList.splice(toDoItemIndex, 1);
     }
+    webStore.setItem("toDoList", JSON.stringify(toDoList));
     console.log("ToDo list after deleting:", toDoList);
-  }
-  function deleteToDo2(toDoId) {
-    toDoList = toDoList.filter((toDo) => toDo.id != toDoId);
-    console.log("ToDo list after deleting (2):", toDoList);
   }
 }
