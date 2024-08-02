@@ -1,13 +1,18 @@
 export default function (webStore = window.sessionStorage) {
-  let toDoList = JSON.parse(webStore.getItem("toDoList")) || [];
-  console.log("Function called with toDoList:", toDoList);
+  console.log("Raw data from sessionStorage:", webStore.getItem("toDoList"));
+
+  let toDoList = JSON.parse(webStore.getItem("toDoList") || "[]");
+  console.log(
+    "Function called with toDoList:",
+    JSON.stringify(toDoList, null, 2)
+  );
+
   let index = toDoList.length + 1;
   return {
     createToDo,
     readToDoList,
     updateToDo,
     deleteToDo,
-    deleteToDo2,
   };
   function createToDo(toDoText) {
     toDoList.push({
@@ -15,11 +20,11 @@ export default function (webStore = window.sessionStorage) {
       id: `${index++}`,
       done: false,
     });
-    webStore.setItem("toDoList", JSON.stringify(toDoList));
-    console.log("ToDo list after adding:", toDoList);
+    webStore.setItem("toDoList", toDoList);
+    console.log("ToDo list after adding:", JSON.stringify(toDoList, null, 2));
   }
   function readToDoList() {
-    return structuredClone(toDoList);
+    toDoList = JSON.parse(webStore.getItem("toDoList") || "[]");
   }
   function updateToDo(toDoId) {
     var toDo = toDoList.find((toDo) => toDo.id === toDoId);
@@ -27,14 +32,19 @@ export default function (webStore = window.sessionStorage) {
       toDo.done = !toDo.done;
     }
     webStore.setItem("toDoList", JSON.stringify(toDoList));
-    console.log("ToDo list after updating:", toDoList);
+    console.log("ToDo list after updating:", JSON.stringify(toDoList, null, 2));
   }
   function deleteToDo(toDoId) {
     const toDoItemIndex = toDoList.findIndex((toDo) => toDo.id === toDoId);
     if (toDoItemIndex > -1) {
       toDoList.splice(toDoItemIndex, 1);
+      console.log(
+        `ToDo list after deleting id ${toDoId}:`,
+        JSON.stringify(toDoList, null, 2)
+      );
+      webStore.setItem("toDoList", JSON.stringify(toDoList));
+    } else {
+      console.log(`ToDo with id ${toDoId} not found`);
     }
-    webStore.setItem("toDoList", JSON.stringify(toDoList));
-    console.log("ToDo list after deleting:", toDoList);
   }
 }

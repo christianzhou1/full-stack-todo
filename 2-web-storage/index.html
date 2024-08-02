@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Memory Array</title>
+    <title>Web Storage</title>
     <script src="crud-interface.mjs" type="module"></script>
   </head>
   <body>
@@ -27,14 +27,19 @@
 
       async function main() {
         const data = await loadData();
-        let mockStore = data.toDos; // holds initial todo list
-        const result = () => mockStore; // returns the current todo list
+
+        window.sessionStorage.clear();
+        window.sessionStorage.setItem("toDoList", JSON.stringify(data.toDos));
+        console.log("Data stored in session storage:", data.toDos);
+
+        const result = () =>
+          JSON.parse(window.sessionStorage.getItem("toDoList"));
 
         let testCount = 0;
-        const crudInterface = new CrudInterface(mockStore);
+        const crudInterface = new CrudInterface();
 
-        console.log(JSON.stringify(result(), null, 2));
-        console.table(mockStore);
+        // console.log(JSON.stringify(result(), null, 2));
+        console.table(result());
         /* console.log(
           "Test",
           ++testCount,
@@ -49,18 +54,8 @@
           result().length
         ); */
         crudInterface.deleteToDo("3");
-        crudInterface.deleteToDo2("2");
-        crudInterface.deleteToDo2("1");
-        //console.log("Test", ++testCount, "\ntoDo After Delete:", result());
-
-        const toDoStore = structuredClone(data.toDos);
-        const crudInterface2 = CrudInterface(toDoStore);
-
-        // expect(toDoStore.length).toBe(2);
-
-        crudInterface2.deleteToDo2("2");
-        console.log("length of toDoStore after delete:", toDoStore.length);
-        // expect(toDoStore.length).toBe(1);
+        crudInterface.deleteToDo("2");
+        crudInterface.deleteToDo("1");
       }
       main();
     </script>

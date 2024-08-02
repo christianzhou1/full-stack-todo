@@ -6,7 +6,6 @@ export default function (toDoList = []) {
     readToDoList,
     updateToDo,
     deleteToDo,
-    deleteToDo2,
   };
   function createToDo(toDoText) {
     toDoList.push({
