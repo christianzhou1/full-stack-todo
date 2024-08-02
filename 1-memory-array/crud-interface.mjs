@@ -6,6 +6,7 @@ export default function (toDoList = []) {
     readToDoList,
     updateToDo,
     deleteToDo,
+    deleteToDo2,
   };
   function createToDo(toDoText) {
     toDoList.push({
@@ -20,9 +21,20 @@ export default function (toDoList = []) {
   }
   function updateToDo(toDoId) {
     var toDo = toDoList.find((toDo) => toDo.id === toDoId);
-    toDo.done = !toDo.done;
+    if (toDo) {
+      toDo.done = !toDo.done;
+    }
+    console.log("ToDo list after updating:", toDoList);
   }
   function deleteToDo(toDoId) {
+    const toDoItemIndex = toDoList.findIndex((toDo) => toDo.id === toDoId);
+    if (toDoItemIndex > -1) {
+      toDoList.splice(toDoItemIndex, 1);
+    }
+    console.log("ToDo list after deleting:", toDoList);
+  }
+  function deleteToDo2(toDoId) {
     toDoList = toDoList.filter((toDo) => toDo.id != toDoId);
+    console.log("ToDo list after deleting (2):", toDoList);
   }
 }

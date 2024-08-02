@@ -50,7 +50,7 @@ The industry is moving towards ESM for its
 
 Therefore, we will use the ES6 module syntax for our FE/BE interface.
 
-The following command switches Node.js to enable ESM:
+For example, to run Jest in our project, the following command switches Node.js to enable ESM:
 
 `node --experimental-vm-modules node_modules/jest/bin/jest.js`
 
@@ -85,3 +85,24 @@ async function loadData() {
   }
 }
 ```
+
+## Testing (Jest)
+
+`node --experimental-vm-modules node_modules/jest/bin/jest.js`
+
+We create a `crud-interface.test.js` file to test the corresponding module.
+
+### Jest syntax
+
+```js
+describe("test suite name", () => {
+  it("test case name", () => {
+    expect(something).toBe(something);
+  });
+  describe("test suite name", () => {
+    ...
+  })
+});
+```
+
+We create a test suite for each function exposed in our CRUD interface.

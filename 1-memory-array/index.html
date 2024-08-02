@@ -27,9 +27,40 @@
 
       async function main() {
         const data = await loadData();
-        console.log("todos", data.toDos);
-        const crudInterface = new CrudInterface(data.toDos);
-        crudInterface.createToDo("task 3");
+        let mockStore = data.toDos; // holds initial todo list
+        const result = () => mockStore; // returns the current todo list
+
+        let testCount = 0;
+        const crudInterface = new CrudInterface(mockStore);
+
+        console.log(JSON.stringify(result(), null, 2));
+        console.table(mockStore);
+        /* console.log(
+          "Test",
+          ++testCount,
+          "\nLen Before Create:",
+          result().length
+        ); */
+        crudInterface.createToDo("Task Three");
+        /* console.log(
+          "Test",
+          ++testCount,
+          "\nLen After Create:",
+          result().length
+        ); */
+        crudInterface.deleteToDo("3");
+        crudInterface.deleteToDo2("2");
+        crudInterface.deleteToDo2("1");
+        //console.log("Test", ++testCount, "\ntoDo After Delete:", result());
+
+        const toDoStore = structuredClone(data.toDos);
+        const crudInterface2 = CrudInterface(toDoStore);
+
+        // expect(toDoStore.length).toBe(2);
+
+        crudInterface2.deleteToDo2("2");
+        console.log("length of toDoStore after delete:", toDoStore.length);
+        // expect(toDoStore.length).toBe(1);
       }
       main();
     </script>
