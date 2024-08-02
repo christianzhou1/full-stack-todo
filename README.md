@@ -106,3 +106,40 @@ describe("test suite name", () => {
 ```
 
 We create a test suite for each function exposed in our CRUD interface.
+
+# 2 - Web Storage
+
+## [window: sessionStorage Property](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
+
+Whenever a document is loaded in a particular tab in the browser, a unique page session gets created and assigned to that particular tab. That page session is valid only for that particular tab.
+
+A page session lasts as long as the tab or the browser is open, and survives over page reloads and restores.
+
+Opening a page in a new tab or window creates a new session with the value of the top-level browsing context, which differs from how session cookies work.
+Opening multiple tabs/windows with the same URL creates sessionStorage for each tab/window.
+
+Duplicating a tab copies the tab's sessionStorage into the new tab.
+Closing a tab/window ends the session and clears objects in sessionStorage.
+
+### Saving text between refreshes
+
+The following example autosaves the contents of a text field, and if the browser is refreshed, restores the text field content so that no writing is lost.
+
+````js
+Copy to Clipboard
+// Get the text field that we're going to track
+let field = document.getElementById("field");
+
+// See if we have an autosave value
+// (this will only happen if the page is accidentally refreshed)
+if (sessionStorage.getItem("autosave")) {
+  // Restore the contents of the text field
+  field.value = sessionStorage.getItem("autosave");
+}
+
+// Listen for changes in the text field
+field.addEventListener("change", () => {
+  // And save the results into the session storage object
+  sessionStorage.setItem("autosave", field.value);
+});```
+````
