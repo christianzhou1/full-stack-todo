@@ -1,0 +1,12 @@
+{
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "server": "json-server ../db.json",
+    "cover": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
