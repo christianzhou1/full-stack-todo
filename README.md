@@ -143,3 +143,80 @@ field.addEventListener("change", () => {
   sessionStorage.setItem("autosave", field.value);
 });```
 ````
+
+# 3 - Json Server
+
+Next, we distinguish the back end and front end, and emulate the api and behavior of a server using json-server.
+
+## json-server
+
+json-server is a node.js tool that takes a json file to create mock RESTful APIs, allowing CRUD operations similar to interacting with a real server.
+
+After calling `json-server ../db.json`, a server will start at port 3000, or another port if we customize with --port: port number.
+
+We use the POST, PATCH, and DELETE http operations, and the fetch api to access the data from the simulated server.
+
+```js
+function createToDo(toDoText) {
+  return fetch(endpointUrl, {
+    method: "POST",
+    body: JSON.stringify({
+      text: toDoText,
+      done: false,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+```
+
+## Front End in Vanilla HTML + CSS + JS
+
+We have two parts to the front end - the toDoForm, and the toDoItem list. A text input and an add button are in the toDoForm. toDoItem is a template, which means it is initially not displayd and renders as the todo list updates.
+
+We fetch the todo list with getToDoList().
+
+```js
+async function getToDoList() {
+  const toDos = await crudInterface.readToDoList();
+  console.log("readToDoList", toDos);
+  showToDoList(toDos);
+}
+```
+
+We pass each todo item to showToDoItem which takes relevant info such as the todo item's state (done or not done), item title, and todo id. toDoTitle displays the item's title, and a button belongs to each todo item. The button displays "Done" or "Del" depending on the state of the item.
+
+```js
+const showToDoList = (toDos) =>
+  (toDoList.innerHTML = toDos.map(showToDoItem).join(""));
+
+const showToDoItem = (toDo) =>
+  toDoItem.innerHTML
+    .replace("toDoAction", toDo.done ? "Del" : "Done")
+    .replace("{toDoTitle}", toDo.text)
+    .replaceAll("{toDoId}", toDo.id);
+```
+
+For simplicity, the actions for the 3 types of buttons are handled in if statements. getToDoList() is called after every button click.
+
+```js
+toDoForm.addEventListener("click", async (evt) => {
+  if (evt.target.nodeName === "BUTTON") {
+    if (evt.target.textContent === "Add") {
+      await crudInterface.createToDo(txtToDoTitle.value);
+      console.log("added todo item", txtToDoTitle.value);
+      txtToDoTitle.value = "";
+    }
+    if (evt.target.textContent === "Done") {
+      await crudInterface.updateToDo(evt.target.dataset.todo);
+      console.log("updated todo item", evt.target.dataset.todo);
+    }
+    if (evt.target.textContent === "Del") {
+      await crudInterface.deleteToDo(evt.target.dataset.todo);
+      console.log("Deleted todo item", evt.target.dataset.todo);
+    }
+  }
+  getToDoList();
+});
+```

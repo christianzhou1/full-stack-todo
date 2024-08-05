@@ -8,13 +8,14 @@ async function getToDoList() {
   showToDoList(toDos);
 }
 
+const showToDoList = (toDos) =>
+  (toDoList.innerHTML = toDos.map(showToDoItem).join(""));
+
 const showToDoItem = (toDo) =>
   toDoItem.innerHTML
     .replace("toDoAction", toDo.done ? "Del" : "Done")
     .replace("{toDoTitle}", toDo.text)
     .replaceAll("{toDoId}", toDo.id);
-const showToDoList = (toDos) =>
-  (toDoList.innerHTML = toDos.map(showToDoItem).join(""));
 
 txtToDoTitle.addEventListener("input", (evt) => {
   btnAddToDo.disabled = !evt.target.value;
